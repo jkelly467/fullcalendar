@@ -18,11 +18,43 @@ ResourceGrid.mixin({
 			dropLocation.end = dropLocation.start.clone().add(meta.duration);
 		}
 
+		if (meta.eventProps.resources) {
+			dropLocation.event = {
+				resources: meta.eventProps.resources
+			}
+		}
+
 		if (!this.view.calendar.isExternalDropRangeAllowed(dropLocation, meta.eventProps)) {
 			return null;
 		}
 
 		return dropLocation;
+	},
+
+	// Compute the text that should be displayed on an event's element.
+	// `range` can be the Event object itself, or something range-like, with at least a `start`.
+	// If event times are disabled, or the event has no time, will return a blank string.
+	// If not specified, formatStr will default to the eventTimeFormat setting,
+	// and displayEnd will default to the displayEventEnd setting.
+	getEventTimeText: function(range, formatStr, displayEnd) {
+		if (formatStr == null) {
+			formatStr = this.eventTimeFormat;
+		}
+
+		if (displayEnd == null) {
+			displayEnd = this.displayEventEnd;
+		}
+
+		if (this.displayEventTime && range.start.hasTime()) {
+			if (displayEnd && range.end) {
+				return this.view.formatRange(range, formatStr);
+			}
+			else {
+				return range.start.format(formatStr);
+			}
+		}
+
+		return '';
 	},
 
 	// Slices up a date range by column into an array of segments
@@ -135,6 +167,21 @@ ResourceGrid.mixin({
 		};
 	},
 
+	expectedTimeText: function(start, end) {
+		if (!start && !end) return ''
+
+		var text = "<< Expected time: "
+		if (start && !end) {
+			text += "After "+start
+		} else if (!start && end) {
+			text += "Before "+start
+		} else {
+			text += start + " - " + end
+		}
+
+		return text + " >>"
+	},
+
 	// Renders the HTML for a single event segment's default rendering
 	fgSegHtml: function(seg, disableResizing) {
 		var view = this.view;
@@ -147,6 +194,7 @@ ResourceGrid.mixin({
 		var timeText;
 		var fullTimeText; // more verbose time text. for the print stylesheet
 		var startTimeText; // just the start time text
+		var expectedTime = this.expectedTimeText(event.expectedStart, event.expectedEnd)
 
 		classes.unshift('fc-time-grid-event', 'fc-v-event');
 
@@ -183,6 +231,7 @@ ResourceGrid.mixin({
 						' data-full="' + htmlEscape(fullTimeText) + '"' +
 						'>' +
 							'<span>' + htmlEscape(timeText) + '</span>' +
+							'<span class="fc-expected-time">' + htmlEscape(expectedTime) + '</span>'+
 						'</div>' :
 						''
 						) +

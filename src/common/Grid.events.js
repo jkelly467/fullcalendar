@@ -976,6 +976,7 @@ function getDraggedElMeta(el) {
 	var startTime; // a Duration
 	var duration;
 	var stick;
+	var resources;
 
 	if (prefix) { prefix += '-'; }
 	eventProps = el.data(prefix + 'event') || null;
