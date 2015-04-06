@@ -50,8 +50,8 @@ module.exports = function(grunt) {
 	// Bare minimum for debugging
 	grunt.registerTask('dev', [
 		'shell:assume-unchanged',
-		'lumbar:build',
-		'languages'
+		'lumbar:build'/*,
+		'languages'*/
 	]);
 
 

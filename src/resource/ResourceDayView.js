@@ -1,0 +1,3 @@
+fcViews.resourceDay = {
+  type: 'resource'
+};

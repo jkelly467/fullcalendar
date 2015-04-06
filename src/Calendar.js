@@ -88,8 +88,8 @@ var Calendar = fc.Calendar = fc.CalendarBase = Class.extend({
 	},
 
 
-	// Builds an object with information on how to create a given view
-	buildViewSpec: function(requestedViewType) {
+	// Builds an object with information on how to create a given view 
+  buildViewSpec: function(requestedViewType) {
 		var viewOverrides = this.overrides.views || {};
 		var defaultsChain = []; // for the view. lowest to highest priority
 		var overridesChain = []; // for the view. lowest to highest priority
@@ -394,6 +394,8 @@ function Calendar_constructor(element, overrides) {
 
 
 	EventManager.call(t, options);
+  ResourceManager.call(t, options);
+  TimeGuideManager.call(t, options);
 	var isFetchNeeded = t.isFetchNeeded;
 	var fetchEvents = t.fetchEvents;
 

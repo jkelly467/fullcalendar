@@ -31,12 +31,16 @@
         "src/common/DayGrid.limit.js",
         "src/common/TimeGrid.js",
         "src/common/TimeGrid.events.js",
+        "src/common/ResourceGrid.js",
+        "src/common/ResourceGrid.events.js",
         "src/common/View.js",
         "src/Calendar.js",
         "src/defaults.js",
         "src/lang.js",
         "src/Header.js",
         "src/EventManager.js",
+        "src/ResourceManager.js",
+        "src/TimeGuideManager.js",
         "src/basic/BasicView.js",
         "src/basic/MonthView.js",
         "src/basic/BasicWeekView.js",
@@ -44,13 +48,16 @@
         "src/agenda/AgendaView.js",
         "src/agenda/AgendaWeekView.js",
         "src/agenda/AgendaDayView.js",
+        "src/resource/ResourceView.js",
+        "src/resource/ResourceDayView.js",
         "src/outro.js"
       ],
       "styles": [
         "src/common/common.css",
         "src/main.css",
         "src/basic/basic.css",
-        "src/agenda/agenda.css"
+        "src/agenda/agenda.css",
+        "src/resource/resource.css"
       ]
     },
     "fullcalendar.print": {

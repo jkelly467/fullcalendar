@@ -119,7 +119,7 @@ function undistributeHeight(els) {
 // Given `els`, a jQuery set of <td> cells, find the cell with the largest natural width and set the widths of all the
 // cells to be that width.
 // PREREQUISITE: if you want a cell to take up width, it needs to have a single inner element w/ display:inline
-function matchCellWidths(els) {
+function matchCellWidths(els, addend) {
 	var maxInnerWidth = 0;
 
 	els.find('> *').each(function(i, innerEl) {
@@ -129,11 +129,28 @@ function matchCellWidths(els) {
 		}
 	});
 
+  if (addend) maxInnerWidth+=addend;
+
 	maxInnerWidth++; // sometimes not accurate of width the text needs to stay on one line. insurance
 
 	els.width(maxInnerWidth);
 
 	return maxInnerWidth;
+}
+
+function maxCellHeight(els) {
+	var maxInnerHeight = 0;
+
+	els.each(function(i, innerEl) {
+		var innerHeight = $(innerEl).outerHeight();
+		if (innerHeight > maxInnerHeight) {
+			maxInnerHeight = innerHeight;
+		}
+	});
+
+	maxInnerHeight++; // sometimes not accurate of width the text needs to stay on one line. insurance
+
+	return maxInnerHeight;
 }
 
 

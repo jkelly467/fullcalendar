@@ -26,6 +26,8 @@ var RowRenderer = Class.extend({
 		var col;
 		var cell;
 
+    var isResource = /resource/.test(this.view.type)
+
 		row = row || 0;
 
 		for (col = 0; col < this.colCnt; col++) {
