@@ -39,10 +39,14 @@ var ResourceGrid = TimeGrid.extend({
 		var date;
 
 		date = this.start.clone();
+		this.resources = view.resources()
 		while (date.isBefore(this.end)) {
-			colData.push({
-				day: date.clone()
-			});
+			for ( var i = 0; i < this.resources.length; i++) {
+				colData.push({
+					resource: this.resources[i],
+					day: date.clone()
+				});
+			}
 			date.add(1, 'day');
 			date = view.skipHiddenDays(date);
 		}
@@ -50,12 +54,6 @@ var ResourceGrid = TimeGrid.extend({
 		if (this.isRTL) {
 			colData.reverse();
 		}
-
-
-    this.resources = view.resources()
-    for (var i = 1; i < this.resources.length; i++) {
-      colData.push($.extend(true, {}, colData[0]))
-    }
 
 		this.colData = colData;
 		this.colCnt = this.resources.length;
@@ -88,18 +86,24 @@ var ResourceGrid = TimeGrid.extend({
 				'<table>' +
 					this.slatRowHtml() +
 				'</table>' +
-			'</div>' + 
-      '<div class="fc-time-guides">' +
-        '<table>' +
-          this.timeGuideHtml() +
-        '</table>' +
-      '</div>';
+			'</div>' +
+            '<div class="fc-time-guides">' +
+                '<table>' +
+                    this.timeGuideHtml({labels:false}) +
+                '</table>' +
+            '</div> '+
+            '<div class="fc-time-guide-labels">' +
+                this.timeGuideHtml({labels:true}) +
+            '</div>';
 	},
 
-  timeGuideHtml: function() {
+  timeGuideHtml: function(guideConfig) {
     function fillerRow() {
       return '<tr><td class="fc-time-guide-filler"></td></tr>';
     }
+    function divFiller() {
+	  return '<div class="fc-time-guide-label-filler"></div>';
+  	}
 
     var view = this.view;
     var html = '';
@@ -132,29 +136,33 @@ var ResourceGrid = TimeGrid.extend({
         if (startedGuide.start === formatTime) {
           //if this is the start time of the guide, render the starting row
 
-          html += 
-            '<tr>'+
-              '<td class="fc-time-guide-filler fc-time-guide-top" >'+
-                '<div class="fc-time-guide-label">'+
-                  '<span>'+startedGuide.name+'</span>'+
-                '</div>'+
-              '</td>'+
-            '</tr>';
+          if (guideConfig.labels) {
+			  var width = Math.abs(moment(startedGuide.start, 'HH:mm').diff(moment(startedGuide.end,'HH:mm'), 'hours', true))*2*22
+              html += '<div class="fc-time-guide-label" style="width:'+width+'px;">' +
+              '<span>' + startedGuide.name + '</span>' +
+              '</div>'
+          } else {
+			  html += '<tr><td class="fc-time-guide-filler fc-time-guide-top"></td></tr>';
+		  }
 
         } else if (startedGuide.end === formatNextTime) {
           //if this is the end time of the guide, render the ending row
-          html += '<tr><td class="fc-time-guide-filler fc-time-guide-bottom"></td></tr>';
+		  if (guideConfig.labels) {
+			  html += divFiller()
+		  }	else {
+			  html += '<tr><td class="fc-time-guide-filler fc-time-guide-bottom"></td></tr>';
+		  }
 
           startedGuide = null;
         } else {
           //if this is between the start and end of the guide, render a filler row
           
-          html += fillerRow();
+          html += guideConfig.labels ? divFiller() : fillerRow();
         }
       } else {
         //if we're between defined guides, render a filler row
 
-        html += fillerRow();
+        html += guideConfig.labels ? divFiller() : fillerRow();
       }
 
       slotTime.add(this.slotDuration);

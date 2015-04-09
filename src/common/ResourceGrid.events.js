@@ -22,6 +22,11 @@ ResourceGrid.mixin({
 			dropLocation.event = {
 				resources: meta.eventProps.resources
 			}
+		} else {
+			meta.eventProps.tempResources = [cell.resource.id]
+			dropLocation.event = {
+				resources: [cell.resource.id]
+			}
 		}
 
 		if (!this.view.calendar.isExternalDropRangeAllowed(dropLocation, meta.eventProps)) {
@@ -72,21 +77,23 @@ ResourceGrid.mixin({
 		range.end = range.end.clone().stripZone()
 
 		for (col = 0; col < colCnt; col++) {
-      colRes = this.resources[col]
-      if (range.event && range.event.resources.indexOf(colRes.id) !== -1) {
+          colRes = this.resources[col]
+		  var hasResource = !!(range.event && range.event.resources && range.event.resources.indexOf(colRes.id) !== -1)
+		  var hasTempResource = !!(range.event && range.event.tempResources && range.event.tempResources.indexOf(colRes.id) !== -1)
+          if (hasResource || hasTempResource) {
 
-        colDate = this.colData[col].day; // will be ambig time/timezone
-        colRange = {
-          start: colDate.clone().time(this.minTime),
-          end: colDate.clone().time(this.maxTime)
-        };
-        seg = intersectionToSeg(range, colRange); // both will be ambig timezone
-        if (seg) {
-          seg.col = col;
-          seg.color = colRes.color;
-          segs.push(seg);
-        }
-      }
+            colDate = this.colData[col].day; // will be ambig time/timezone
+            colRange = {
+              start: colDate.clone().time(this.minTime),
+              end: colDate.clone().time(this.maxTime)
+            };
+            seg = intersectionToSeg(range, colRange); // both will be ambig timezone
+            if (seg) {
+              seg.col = col;
+              seg.color = colRes.color;
+              segs.push(seg);
+            }
+          }
 		}
 
 		return segs;

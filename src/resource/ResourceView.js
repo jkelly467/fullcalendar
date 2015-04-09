@@ -245,7 +245,7 @@ var ResourceView = fcViews.resource = View.extend({
 	// Refreshes the horizontal dimensions of the view
 	updateWidth: function() {
 		// make all axis cells line up, and record the width so newly created axis cells will have it
-    this.timeGuideHeight = maxCellHeight(this.el.find('.fc-time-guide-label'));
+        this.timeGuideHeight = maxCellHeight(this.el.find('.fc-time-guide-label'));
 		this.axisWidth = matchCellWidths(this.el.find('.fc-axis'), this.timeGuideHeight);
 	},
 
