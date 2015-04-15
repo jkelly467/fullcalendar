@@ -52,3 +52,8 @@
 .fc-expected-time {
   margin-left: 30px;  
 }
+
+.over-capacity {
+  border-color: red !important;
+  border-width: 2px;
+}

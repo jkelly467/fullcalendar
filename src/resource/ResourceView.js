@@ -77,29 +77,33 @@ var ResourceView = fcViews.resource = View.extend({
 		this.noScrollRowEls = this.el.find('.fc-row:not(.fc-scroller *)'); // fake rows not within the scroller
 	},
 
-  resources: function() {
-      this._resources = this._resources || this.calendar.fetchResources();
-      return this._resources;
-  },
+    resources: function() {
+        this._resources = this._resources || this.calendar.fetchResources();
+        return this._resources;
+    },
 
-  hasResource: function(event, resource) {
-      if(this.opt('hasResource')) {
+    hasResource: function(event, resource) {
+        if(this.opt('hasResource')) {
           return this.opt('hasResource').apply(this, arguments);
-      }
+        }
 
-      return event.resources && $.grep(event.resources, function(id) {
+        return event.resources && $.grep(event.resources, function(id) {
               return id == resource.id;
           }).length;
-  },
+    },
 
-  timeGuide: function() {
-      this._timeGuides = this._timeGuides || this.calendar.fetchTimeGuides();
-      return this._timeGuides;
-  },
+    timeGuide: function() {
+        this._timeGuides = this._timeGuides || this.calendar.fetchTimeGuides();
+        return this._timeGuides;
+    },
 
-  timeGuideByStart: function(start) {
-      return this.calendar.findTimeGuideByStart(start);
-  },
+    timeGuideByStart: function(start) {
+        return this.calendar.findTimeGuideByStart(start);
+    },
+
+    timeGuideContaining: function(date) {
+        return this.calendar.findTimeGuideContaining(date);
+    },
 
 
 	// Unrenders the content of the view. Since we haven't separated skeleton rendering from date rendering,

@@ -29,6 +29,8 @@ ResourceGrid.mixin({
 			}
 		}
 
+		meta.eventProps.timeGuide = cell.timeGuide
+
 		if (!this.view.calendar.isExternalDropRangeAllowed(dropLocation, meta.eventProps)) {
 			return null;
 		}

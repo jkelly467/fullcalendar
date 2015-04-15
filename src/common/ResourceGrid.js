@@ -36,6 +36,7 @@ var ResourceGrid = TimeGrid.extend({
 	updateCells: function() {
 		var view = this.view;
 		var colData = [];
+		var rowData = [];
 		var date;
 
 		date = this.start.clone();
@@ -58,6 +59,16 @@ var ResourceGrid = TimeGrid.extend({
 		this.colData = colData;
 		this.colCnt = this.resources.length;
 		this.rowCnt = Math.ceil((this.maxTime - this.minTime) / this.snapDuration); // # of vertical snaps
+
+		var rowTime = this.start.clone().add(this.minTime);
+		var rowEndTime = this.start.clone().add(this.maxTime);
+		while (rowTime.isBefore(rowEndTime)) {
+			rowData.push({
+				timeGuide: view.timeGuideContaining(rowTime)
+			});
+			rowTime.add(this.snapDuration);
+		}
+		this.rowData = rowData;
 	},
 
 
