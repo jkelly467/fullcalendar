@@ -57,3 +57,14 @@
   border-color: red !important;
   border-width: 2px;
 }
+
+.fc-view-container {
+  overflow-x: auto;
+}
+
+.fc-event-remove {
+  float: right;
+  background-color: black;
+  padding: 2px;
+  border-radius: 8px;
+}

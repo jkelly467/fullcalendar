@@ -38,6 +38,11 @@ ResourceGrid.mixin({
 		return dropLocation;
 	},
 
+	computeEventDrop: function(startCell, endCell, event) {
+		event.tempResources = [endCell.resource.id] //add resource data from the destination cell
+		return Grid.prototype.computeEventDrop.call(this, startCell, endCell, event); // call the super-method
+	},
+
 	// Compute the text that should be displayed on an event's element.
 	// `range` can be the Event object itself, or something range-like, with at least a `start`.
 	// If event times are disabled, or the event has no time, will return a blank string.
@@ -241,6 +246,7 @@ ResourceGrid.mixin({
 						'>' +
 							'<span>' + htmlEscape(timeText) + '</span>' +
 							'<span class="fc-expected-time">' + htmlEscape(expectedTime) + '</span>'+
+							'<span class="fc-event-remove" data-event-id="'+event._id+'">'+this.eventDeleteHtml+'</span>'+
 						'</div>' :
 						''
 						) +

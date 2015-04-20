@@ -30,8 +30,18 @@ var ResourceView = fcViews.resource = View.extend({
 
 	initialize: function() {
 		this.timeGrid = new ResourceGrid(this);
+		if (this.opt('allDaySlot')) { // should we display the "all-day" area?
+			this.dayGrid = new DayGrid(this); // the all-day subcomponent of this view
 
-    this.coordMap = this.timeGrid.coordMap;
+			// the coordinate grid will be a combination of both subcomponents' grids
+			this.coordMap = new ComboCoordMap([
+				this.dayGrid.coordMap,
+				this.timeGrid.coordMap
+			]);
+		}
+		else {
+			this.coordMap = this.timeGrid.coordMap;
+		}
 	},
 
 
@@ -173,8 +183,8 @@ var ResourceView = fcViews.resource = View.extend({
 					'<span>' + // needed for matchCellWidths
 						htmlEscape(weekText) +
 					'</span>' +
-				'</th>';
-		}
+                    '</th>';
+            }
 		else {
 			return '<th class="fc-axis ' + this.widgetHeaderClass + '" ' + this.axisStyleAttr() + '></th>';
 		}
