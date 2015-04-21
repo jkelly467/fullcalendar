@@ -28,6 +28,20 @@ function Header(calendar, options) {
 		tm = options.theme ? 'ui' : 'fc';
 
 		if (sections) {
+			var custom = sections.custom;
+			if (custom) {
+				$.each(custom, function(i, item) {
+					t[item.alias] = item.generator;
+					if(item.buttonText) {
+						if (!calendar.overrides.buttonText) calendar.overrides.buttonText = {};
+						calendar.overrides.buttonText[item.alias] = item.buttonText;
+					}
+					if(item.defaultText) {
+						options.buttonText[item.alias] = item.defaultText;
+					}
+				})
+			}
+
 			el = $("<div class='fc-toolbar'/>")
 				.append(renderSection('left'))
 				.append(renderSection('right'))
@@ -87,66 +101,80 @@ function Header(calendar, options) {
 							overrideText = (calendar.overrides.buttonText || {})[buttonName];
 							defaultText = options.buttonText[buttonName]; // everything else is considered default
 						}
+						else if (t[buttonName]) { // a custom method
+							if ($.isFunction(t[buttonName])) {
+								buttonClick = function(el) {
+									t[buttonName].call(el, t);
+								};
+							} else if (typeof t[buttonName] === 'string') {
+								buttonClick = $(t[buttonName])
+							}
+							overrideText = (calendar.overrides.buttonText || {})[buttonName];
+							defaultText = options.buttonText[buttonName]; // everything else is considered default
+						}
 
 						if (buttonClick) {
 
-							themeIcon = options.themeButtonIcons[buttonName];
-							normalIcon = options.buttonIcons[buttonName];
+							if ($.isFunction(buttonClick)) {
 
-							if (overrideText) {
-								innerHtml = htmlEscape(overrideText);
-							}
-							else if (themeIcon && options.theme) {
-								innerHtml = "<span class='ui-icon ui-icon-" + themeIcon + "'></span>";
-							}
-							else if (normalIcon && !options.theme) {
-								innerHtml = "<span class='fc-icon fc-icon-" + normalIcon + "'></span>";
-							}
-							else {
-								innerHtml = htmlEscape(defaultText);
-							}
+								themeIcon = options.themeButtonIcons[buttonName];
+								normalIcon = options.buttonIcons[buttonName];
 
-							classes = [
-								'fc-' + buttonName + '-button',
-								tm + '-button',
-								tm + '-state-default'
-							];
+								if (overrideText) {
+									innerHtml = htmlEscape(overrideText);
+								}
+								else if (themeIcon && options.theme) {
+									innerHtml = "<span class='ui-icon ui-icon-" + themeIcon + "'></span>";
+								}
+								else if (normalIcon && !options.theme) {
+									innerHtml = "<span class='fc-icon fc-icon-" + normalIcon + "'></span>";
+								}
+								else {
+									innerHtml = htmlEscape(defaultText);
+								}
 
-							button = $( // type="button" so that it doesn't submit a form
-								'<button type="button" class="' + classes.join(' ') + '">' +
+								classes = [
+									'fc-' + buttonName + '-button',
+									tm + '-button',
+									tm + '-state-default'
+								];
+
+
+								button = $( // type="button" so that it doesn't submit a form
+									'<button type="button" class="' + classes.join(' ') + '">' +
 									innerHtml +
-								'</button>'
+									'</button>'
 								)
-								.click(function() {
-									// don't process clicks for disabled buttons
-									if (!button.hasClass(tm + '-state-disabled')) {
+									.click(function () {
+										// don't process clicks for disabled buttons
+										if (!button.hasClass(tm + '-state-disabled')) {
 
-										buttonClick();
+											buttonClick(this);
 
-										// after the click action, if the button becomes the "active" tab, or disabled,
-										// it should never have a hover class, so remove it now.
-										if (
-											button.hasClass(tm + '-state-active') ||
-											button.hasClass(tm + '-state-disabled')
-										) {
-											button.removeClass(tm + '-state-hover');
+											// after the click action, if the button becomes the "active" tab, or disabled,
+											// it should never have a hover class, so remove it now.
+											if (
+												button.hasClass(tm + '-state-active') ||
+												button.hasClass(tm + '-state-disabled')
+											) {
+												button.removeClass(tm + '-state-hover');
+											}
 										}
-									}
-								})
-								.mousedown(function() {
-									// the *down* effect (mouse pressed in).
-									// only on buttons that are not the "active" tab, or disabled
-									button
-										.not('.' + tm + '-state-active')
-										.not('.' + tm + '-state-disabled')
-										.addClass(tm + '-state-down');
-								})
-								.mouseup(function() {
-									// undo the *down* effect
-									button.removeClass(tm + '-state-down');
-								})
-								.hover(
-									function() {
+									})
+									.mousedown(function () {
+										// the *down* effect (mouse pressed in).
+										// only on buttons that are not the "active" tab, or disabled
+										button
+											.not('.' + tm + '-state-active')
+											.not('.' + tm + '-state-disabled')
+											.addClass(tm + '-state-down');
+									})
+									.mouseup(function () {
+										// undo the *down* effect
+										button.removeClass(tm + '-state-down');
+									})
+									.hover(
+									function () {
 										// the *hover* effect.
 										// only on buttons that are not the "active" tab, or disabled
 										button
@@ -154,13 +182,16 @@ function Header(calendar, options) {
 											.not('.' + tm + '-state-disabled')
 											.addClass(tm + '-state-hover');
 									},
-									function() {
+									function () {
 										// undo the *hover* effect
 										button
 											.removeClass(tm + '-state-hover')
 											.removeClass(tm + '-state-down'); // if mouseleave happens before mouseup
 									}
 								);
+							} else {
+								button = buttonClick
+							}
 
 							groupChildren = groupChildren.add(button);
 						}
