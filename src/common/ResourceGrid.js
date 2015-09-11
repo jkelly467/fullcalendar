@@ -29,7 +29,7 @@ var ResourceGrid = TimeGrid.extend({
 
 	processOptions: function() {
 		TimeGrid.prototype.processOptions.call(this) //call the super method
-		this.eventDeleteHtml = this.view.opt('eventDeleteHtml') || 'X'
+		this.eventDeleteHtml = this.view.opt('eventDeleteHtml')
 	},
 
 

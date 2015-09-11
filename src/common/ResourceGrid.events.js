@@ -4,6 +4,8 @@ ResourceGrid.mixin({
 	// returns start/end dates for the event that would result from the hypothetical drop. end might be null.
 	// Returning a null value signals an invalid drop cell.
 	computeExternalDrop: function(cell, meta) {
+		if (!meta.eventProps) return null
+
 		var dropLocation = {
 			start: cell.start.clone(),
 			end: null
@@ -238,6 +240,7 @@ ResourceGrid.mixin({
 				''
 				) +
 			'>' +
+                (this.eventDeleteHtml ? '<span class="fc-event-remove" data-event-id="'+event._id+'">'+this.eventDeleteHtml+'</span>' : '')+
 				'<div class="fc-content">' +
 					(timeText ?
 						'<div class="fc-time"' +
@@ -246,7 +249,6 @@ ResourceGrid.mixin({
 						'>' +
 							'<span>' + htmlEscape(timeText) + '</span>' +
 							'<span class="fc-expected-time">' + htmlEscape(expectedTime) + '</span>'+
-							'<span class="fc-event-remove" data-event-id="'+event._id+'">'+this.eventDeleteHtml+'</span>'+
 						'</div>' :
 						''
 						) +

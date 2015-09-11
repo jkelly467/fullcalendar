@@ -999,6 +999,7 @@ function EventManager(options) { // assumed to be a calendar
 
 		// the range must be fully contained by at least one of produced constraint events
 		if (constraint != null) {
+			if (constraint.resources.indexOf(event.tempResources[0]) === -1) return false
 
 			// not treated as an event! intermediate data structure
 			// TODO: use ranges in the future
