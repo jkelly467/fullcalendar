@@ -1092,7 +1092,8 @@ function EventManager(options) { // assumed to be a calendar
 		var eventStart = event.start.clone().stripZone();
 		var eventEnd = t.getEventEnd(event).stripZone();
 
-		return range.start < eventEnd && range.end > eventStart;
+		return range.start < eventEnd && range.end > eventStart &&
+			range.event.resources[0] === event.resources[0];
 	}
 
 
