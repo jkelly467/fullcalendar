@@ -26,7 +26,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 6;
+  z-index: 4;
 }
 
 .fc-time-guide-labels>div {
@@ -69,4 +69,11 @@
   border-radius: 8px;
   position: relative;
   z-index: 5;
+  color: white;
+}
+
+.fc-event-no-manifest {
+  font-weight: bold;
+  color: red;
+  font-size: large;
 }

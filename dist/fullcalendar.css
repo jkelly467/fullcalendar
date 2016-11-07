@@ -1,7 +1,7 @@
 /*!
- * FullCalendar v2.3.1 Stylesheet
- * Docs & License: http://fullcalendar.io/
- * (c) 2015 Adam Shaw
+ * <%= meta.title %> v<%= meta.version %> Stylesheet
+ * Docs & License: <%= meta.homepage %>
+ * (c) <%= meta.copyright %>
  */
 
 
@@ -1058,4 +1058,83 @@ be a descendant of the grid when it is being dragged.
 
 .fc-time-grid-event .fc-resizer:after {
 	content: "=";
+}
+
+.fc-time-guides {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+
+.fc-time-guides>table>tbody>tr>td.fc-time-guide-top {
+  border-top: 1px #555 double;
+}
+
+.fc-time-guides>table>tbody>tr>td.fc-time-guide-bottom {
+  border-bottom: 1px #555 double;
+}
+
+.fc-time-guides>table>tbody>tr>td {
+  padding: 0 4px;
+}
+
+.fc-time-guide-filler {
+  height: 1.5em;
+}
+
+.fc-time-guide-labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+}
+
+.fc-time-guide-labels>div {
+  padding: 0;
+  height: 22px;
+}
+
+.fc-time-guide-label {
+  transform: rotate(90deg);
+  transform-origin: left bottom 0;
+  position: relative;
+  top: -22px;
+  text-align: center;
+}
+
+.fc-time-guide-label span {
+  background-color: rgba(255,255,255,0.7);
+  color: #8c6347;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.fc-expected-time {
+  margin-left: 30px;  
+}
+
+.over-capacity {
+  border-color: red !important;
+  border-width: 2px;
+}
+
+.fc-view-container {
+  overflow-x: auto;
+}
+
+.fc-event-remove {
+  float: right;
+  background-color: black;
+  padding: 2px;
+  border-radius: 8px;
+  position: relative;
+  z-index: 5;
+  color: white;
+}
+
+.fc-event-no-manifest {
+  font-weight: bold;
+  color: red;
+  font-size: large;
 }

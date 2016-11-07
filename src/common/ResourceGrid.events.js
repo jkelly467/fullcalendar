@@ -100,6 +100,7 @@ ResourceGrid.mixin({
             if (seg) {
               seg.col = col;
               seg.color = colRes.color;
+		      seg.textColor = colRes.textColor;
               segs.push(seg);
             }
           }
@@ -178,7 +179,7 @@ ResourceGrid.mixin({
 			color:
 				event.textColor ||
 				source.textColor ||
-        seg.textColor ||
+                seg.textColor ||
 				view.opt('eventTextColor')
 		};
 	},
@@ -254,6 +255,7 @@ ResourceGrid.mixin({
 						) +
 					(event.title ?
 						'<div class="fc-title">' +
+							(!event.onManifest ? '<span class="fc-event-no-manifest" title="Event is not on a manifest. Remove event to reschedule.">!</span> ' : '')+
 							htmlEscape(event.title) +
 						'</div>' :
 						''
