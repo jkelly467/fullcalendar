@@ -3410,7 +3410,7 @@ var Grid = fc.Grid = RowRenderer.extend({
 		var date = cell.start;
 
 		return '' +
-			'<th class="fc-day-header ' + view.widgetHeaderClass + ' fc-' + dayIDs[date.day()] + '">' +
+			'<th class="fc-day-header ' + view.widgetHeaderClass + ' fc-' + dayIDs[date.day()] + ' ">' +
 				htmlEscape(date.format(this.colHeadFormat)) +
 			'</th>';
 	},
@@ -3421,6 +3421,8 @@ var Grid = fc.Grid = RowRenderer.extend({
 		var view = this.view;
 		var date = cell.start;
 		var classes = this.getDayClasses(date);
+
+    if (cell.resource && cell.resource.disabled) classes.push('fc-disabled-asset')
 
 		classes.unshift('fc-day', view.widgetContentClass);
 
@@ -6849,6 +6851,8 @@ ResourceGrid.mixin({
 	computeExternalDrop: function(cell, meta) {
 		if (!meta.eventProps) return null
 
+    if (cell.resource.disabled) return null
+
 		var dropLocation = {
 			start: cell.start.clone(),
 			end: null
@@ -6885,7 +6889,11 @@ ResourceGrid.mixin({
 
 	computeEventDrop: function(startCell, endCell, event) {
 		event.tempResources = [endCell.resource.id] //add resource data from the destination cell
-		return Grid.prototype.computeEventDrop.call(this, startCell, endCell, event); // call the super-method
+		var drop = Grid.prototype.computeEventDrop.call(this, startCell, endCell, event); // call the super-method
+    drop.event = {
+      resources: [endCell.resource.id]
+    }
+    return drop
 	},
 
 	// Compute the text that should be displayed on an event's element.
@@ -8245,6 +8253,7 @@ function Calendar_constructor(element, overrides) {
 	t.render = render;
 	t.destroy = destroy;
 	t.refetchEvents = refetchEvents;
+	t.refetchResources = refetchResources;
 	t.reportEvents = reportEvents;
 	t.reportEventChange = reportEventChange;
 	t.rerenderEvents = renderEvents; // `renderEvents` serves as a rerender. an API method
@@ -8663,6 +8672,10 @@ function Calendar_constructor(element, overrides) {
 		destroyEvents(); // so that events are cleared before user starts waiting for AJAX
 		fetchAndRenderEvents();
 	}
+
+  function refetchResources() {
+    t.getView().resetResources()
+  }
 
 
 	function renderEvents() { // destroys old events if previously rendered
@@ -11861,6 +11874,10 @@ var ResourceView = fcViews.resource = View.extend({
         return this._resources;
     },
 
+    resetResources: function() {
+        this._resources = null;
+    },
+
     hasResource: function(event, resource) {
         if(this.opt('hasResource')) {
           return this.opt('hasResource').apply(this, arguments);
@@ -12005,6 +12022,7 @@ var ResourceView = fcViews.resource = View.extend({
 
 		if(resource) {
 			classes.push(resource.className);
+      if (resource.disabled) classes.push('fc-disabled-asset')
 		}
 
 		return '' +

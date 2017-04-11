@@ -222,6 +222,7 @@ function Calendar_constructor(element, overrides) {
 	t.render = render;
 	t.destroy = destroy;
 	t.refetchEvents = refetchEvents;
+	t.refetchResources = refetchResources;
 	t.reportEvents = reportEvents;
 	t.reportEventChange = reportEventChange;
 	t.rerenderEvents = renderEvents; // `renderEvents` serves as a rerender. an API method
@@ -640,6 +641,10 @@ function Calendar_constructor(element, overrides) {
 		destroyEvents(); // so that events are cleared before user starts waiting for AJAX
 		fetchAndRenderEvents();
 	}
+
+  function refetchResources() {
+    t.getView().resetResources()
+  }
 
 
 	function renderEvents() { // destroys old events if previously rendered

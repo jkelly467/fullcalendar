@@ -613,7 +613,7 @@ var Grid = fc.Grid = RowRenderer.extend({
 		var date = cell.start;
 
 		return '' +
-			'<th class="fc-day-header ' + view.widgetHeaderClass + ' fc-' + dayIDs[date.day()] + '">' +
+			'<th class="fc-day-header ' + view.widgetHeaderClass + ' fc-' + dayIDs[date.day()] + ' ">' +
 				htmlEscape(date.format(this.colHeadFormat)) +
 			'</th>';
 	},
@@ -624,6 +624,8 @@ var Grid = fc.Grid = RowRenderer.extend({
 		var view = this.view;
 		var date = cell.start;
 		var classes = this.getDayClasses(date);
+
+    if (cell.resource && cell.resource.disabled) classes.push('fc-disabled-asset')
 
 		classes.unshift('fc-day', view.widgetContentClass);
 

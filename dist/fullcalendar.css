@@ -1138,3 +1138,8 @@ be a descendant of the grid when it is being dragged.
   color: red;
   font-size: large;
 }
+
+.fc-disabled-asset, .fc-unthemed .fc-disabled-asset {
+  text-decoration: line-through;
+  background-color: #ddd;
+}

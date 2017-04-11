@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-jscs-checker');
 	grunt.loadNpmTasks('grunt-shell');
-	grunt.loadNpmTasks('grunt-karma');
+	// grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-bump');
 	grunt.loadNpmTasks('lumbar');
 	
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
 		'clean',
 		'modules',
 		'languages',
-		'karma:single',
+		// 'karma:single',
 		'archiveDist'
 	]);
 

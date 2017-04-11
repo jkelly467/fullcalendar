@@ -92,6 +92,10 @@ var ResourceView = fcViews.resource = View.extend({
         return this._resources;
     },
 
+    resetResources: function() {
+        this._resources = null;
+    },
+
     hasResource: function(event, resource) {
         if(this.opt('hasResource')) {
           return this.opt('hasResource').apply(this, arguments);
@@ -236,6 +240,7 @@ var ResourceView = fcViews.resource = View.extend({
 
 		if(resource) {
 			classes.push(resource.className);
+      if (resource.disabled) classes.push('fc-disabled-asset')
 		}
 
 		return '' +

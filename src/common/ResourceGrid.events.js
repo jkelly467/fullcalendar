@@ -6,6 +6,8 @@ ResourceGrid.mixin({
 	computeExternalDrop: function(cell, meta) {
 		if (!meta.eventProps) return null
 
+    if (cell.resource.disabled) return null
+
 		var dropLocation = {
 			start: cell.start.clone(),
 			end: null
@@ -42,7 +44,11 @@ ResourceGrid.mixin({
 
 	computeEventDrop: function(startCell, endCell, event) {
 		event.tempResources = [endCell.resource.id] //add resource data from the destination cell
-		return Grid.prototype.computeEventDrop.call(this, startCell, endCell, event); // call the super-method
+		var drop = Grid.prototype.computeEventDrop.call(this, startCell, endCell, event); // call the super-method
+    drop.event = {
+      resources: [endCell.resource.id]
+    }
+    return drop
 	},
 
 	// Compute the text that should be displayed on an event's element.

@@ -77,3 +77,8 @@
   color: red;
   font-size: large;
 }
+
+.fc-disabled-asset, .fc-unthemed .fc-disabled-asset {
+  text-decoration: line-through;
+  background-color: #ddd;
+}
