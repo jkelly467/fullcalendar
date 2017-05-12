@@ -247,7 +247,7 @@ ResourceGrid.mixin({
 				''
 				) +
 			'>' +
-                (this.eventDeleteHtml ? '<span class="fc-event-remove" data-event-id="'+event._id+'">'+this.eventDeleteHtml+'</span>' : '')+
+                ((this.eventDeleteHtml && !event.cannotRemove) ? '<span class="fc-event-remove" data-event-id="'+event._id+'">'+this.eventDeleteHtml+'</span>' : '')+
 				'<div class="fc-content">' +
 					(timeText ?
 						'<div class="fc-time"' +
