@@ -91,7 +91,7 @@ NOTE: use percentage font sizes or else old IE chokes
 
 .fc-icon:after {
 	position: relative;
-	margin: 0 -1em; /* ensures character will be centered, regardless of width */
+	margin: 0 -2px; /* ensures character will be centered, regardless of width */
 }
 
 .fc-icon-left-single-arrow:after {

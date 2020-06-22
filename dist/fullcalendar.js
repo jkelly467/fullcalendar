@@ -7107,6 +7107,7 @@ ResourceGrid.mixin({
 					(event.title ?
 						'<div class="fc-title">' +
 							(!event.onManifest ? '<span class="fc-event-no-manifest" title="Event is not on a manifest. Remove event to reschedule.">!</span> ' : '')+
+              (event.typeIcon ? event.typeIcon : '')+
 							htmlEscape(event.title) +
 						'</div>' :
 						''
